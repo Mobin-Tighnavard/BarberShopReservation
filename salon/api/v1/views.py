@@ -1,5 +1,10 @@
-from rest_framework.generics import  ListAPIView
-from ...models import Barber , Service
+from rest_framework.generics import ListAPIView
+from rest_framework.response import Response
+from rest_framework .views import APIView
+from rest_framework import status
+from .services import generate_slots
+
+from ...models import Barber , Service , WeeklyPlan
 from .serializers import BarberSerializers , ServiceSerializers
 
 class BarberListApiView(ListAPIView):
@@ -9,3 +14,19 @@ class BarberListApiView(ListAPIView):
 class ServiceListApiView(ListAPIView):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializers
+
+class TimeSlotList(APIView):
+    def get(self,request,barber_id):
+         date = request.query_params.get("date")
+         if date:
+             try:
+                result=generate_slots(barber_id,date)
+             except WeeklyPlan.DoesNotExist:
+                 return Response(
+                     {"message": "No Weekly plan found"}, status=status.HTTP_404_NOT_FOUND
+                 )
+             return Response(result)
+         else:
+             return Response(
+                 {"message": "date is required"}, status=status.HTTP_400_BAD_REQUEST
+             )

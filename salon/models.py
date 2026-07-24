@@ -29,3 +29,24 @@ class Service(models.Model):
     name = models.CharField(max_length=50,unique=True)
     def __str__(self):
         return self.name
+
+
+class WeeklyPlan(models.Model):
+    class WeeklyStatus(models.TextChoices):
+        ACTIVE = "ACTIVE", "Active"
+        OFF = "OFF", 'Off'
+        FULL = "FULL", "Full"
+    barber = models.ForeignKey(Barber,on_delete=models.PROTECT)
+    date = models.DateField()
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    status = models.CharField(max_length=70,
+                              choices=WeeklyStatus.choices,
+                              default=WeeklyStatus.ACTIVE)
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["barber","date"],name="unique_weekly_plan")
+        ]
+
+    def __str__(self):
+        return str(self.barber) +" / "+str(self.date)
