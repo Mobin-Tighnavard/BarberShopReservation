@@ -30,6 +30,14 @@ class Service(models.Model):
     def __str__(self):
         return self.name
 
+class BarberService(models.Model):
+    barber = models.ForeignKey(Barber,on_delete=models.CASCADE,related_name="barber_service")
+    service = models.ForeignKey(Service,on_delete=models.CASCADE,related_name="barber_service")
+    price = models.PositiveIntegerField()
+    delete_flag = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.barber.first_name + " " + self.barber.last_name +"/"+ self.service.name + "/"+ str(self.price)
 
 class WeeklyPlan(models.Model):
     class WeeklyStatus(models.TextChoices):
