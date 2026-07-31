@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework .views import APIView
@@ -18,6 +19,10 @@ class ServiceListApiView(ListAPIView):
 class TimeSlotList(APIView):
     def get(self,request,barber_id):
          date = request.query_params.get("date")
+         try :
+             barber = Barber.objects.get(id = barber_id)
+         except Barber.DoesNotExist:
+             return Response({"message":"barber with this id does not exist"},status=status.HTTP_404_NOT_FOUND)
          if date:
              try:
                 result=generate_slots(barber_id,date)
@@ -28,5 +33,5 @@ class TimeSlotList(APIView):
              return Response(result)
          else:
              return Response(
-                 {"message": "date is required"}, status=status.HTTP_400_BAD_REQUEST
+                 {"message": "فرستادن تاریخ در ریکوِئست الزامی است"}, status=status.HTTP_400_BAD_REQUEST
              )
