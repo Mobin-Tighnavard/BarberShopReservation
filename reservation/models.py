@@ -26,7 +26,7 @@ class Payment(models.Model):
         ACCEPTED = "ACCEPTED" , "accepted"
         REJECTED = "REJECTED" , "rejected"
 
-    reservation = models.OneToOneField(Reservation,on_delete=models.PROTECT)
+    reservation = models.OneToOneField(Reservation,on_delete=models.PROTECT,related_name="payment")
     receipt_image = models.ImageField(upload_to=payment_receipt_path)
     status = models.CharField(max_length=20,choices=PaymentStatus.choices,default=PaymentStatus.PENDING)
     created_date = models.DateTimeField(auto_now_add=True)
