@@ -41,7 +41,7 @@ class CreateCustomerSerializers(serializers.ModelSerializer):
 
         if customer:
             if customer.first_name != first_name or customer.last_name != last_name:
-                raise serializers.ValidationError({"message":"this phone number already exist with another first and last name"})
+                raise serializers.ValidationError({"message":"این شماره با نام و فامیلی دیگر قبلا مراجعه کرده"})
         return attrs
 
     def create(self, validated_data):
