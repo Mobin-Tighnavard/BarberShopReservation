@@ -41,6 +41,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("salon/",include("salon.urls")),
     path("account/",include("account.urls")),
+    path("reservation/",include("reservation.urls")),
 ]
 if settings.DEBUG:
     urlpatterns += static(
