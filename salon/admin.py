@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Barber , Service , WeeklyPlan , BarberService
 class BarberAdmin(admin.ModelAdmin):
-    list_display = ['first_name','last_name','phone_number','national_code']
+    list_display = ['first_name','last_name','phone_number','national_code','is_active']
 
 class WeeklyPlanAdmin(admin.ModelAdmin):
     list_display = ['barber_id','date','start_time','end_time','status']
