@@ -21,7 +21,8 @@ def generate_slots(barber_id,date):
     while current < end:
         end_slot = current + duration
         slots.append({"start_time":current.time(),
-                      "end_time":end_slot.time()})
+                      "end_time":end_slot.time(),
+                      "status":weekly_plan.status})
         current = end_slot
     return slots
 
