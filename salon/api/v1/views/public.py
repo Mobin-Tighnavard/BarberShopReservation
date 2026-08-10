@@ -3,18 +3,20 @@ from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework .views import APIView
 from rest_framework import status
-from .services import generate_slots
+from ..services import generate_slots
 
-from ...models import Barber , Service , WeeklyPlan
-from .serializers import BarberSerializers , ServiceSerializers
+from ....models import Barber , BarberService , WeeklyPlan
+from ..serializers.public import BarberSerializers , BarberServiceSerializers
 
 class BarberListApiView(ListAPIView):
     queryset = Barber.objects.filter(is_active = True)
     serializer_class = BarberSerializers
 
-class ServiceListApiView(ListAPIView):
-    queryset = Service.objects.all()
-    serializer_class = ServiceSerializers
+class BarberServiceListApiView(ListAPIView):
+    serializer_class = BarberServiceSerializers
+    def get_queryset(self):
+        barber_id = self.kwargs["barber_id"]
+        return BarberService.objects.filter(barber_id=barber_id)
 
 class TimeSlotList(APIView):
     def get(self,request,barber_id):
