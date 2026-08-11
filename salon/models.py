@@ -27,6 +27,7 @@ class Barber(models.Model):
 # Create your models here.
 class Service(models.Model):
     name = models.CharField(max_length=50,unique=True)
+    delete_flag = models.BooleanField(default=False)
     def __str__(self):
         return self.name
 

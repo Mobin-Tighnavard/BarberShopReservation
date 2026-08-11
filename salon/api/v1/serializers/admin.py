@@ -1,7 +1,7 @@
 import re
 from rest_framework import serializers
-from ....models import Barber
-class CreateBarberSerializers(serializers.ModelSerializer):
+from ....models import Barber , Service , BarberService
+class AdminCreateBarberSerializers(serializers.ModelSerializer):
     class Meta:
         model = Barber
         fields = ["first_name","last_name","phone_number","national_code"]
@@ -69,3 +69,18 @@ class AdminUpdateBarberSerializer(serializers.ModelSerializer):
                 "کد ملی باید 10 رقم باشد!"
             )
         return value
+
+class AdminCreateServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Service
+        fields = ['name']
+
+class AdminServiceListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Service
+        fields = ['name']
+
+class ServicePriceUpdateSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = BarberService
+        fields = ['price']
