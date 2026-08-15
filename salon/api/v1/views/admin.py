@@ -1,8 +1,8 @@
 from rest_framework.generics import CreateAPIView,ListAPIView,DestroyAPIView,UpdateAPIView,RetrieveAPIView
-from ....models import Barber , Service , BarberService
+from ....models import Barber , Service , BarberService , TimeSlot
 from ..serializers.admin import (AdminCreateBarberSerializers,AdminBarberListSerializer,AdminUpdateBarberSerializer
                                  ,AdminCreateServiceSerializer,AdminServiceListSerializer,
-                                 ServicePriceUpdateSerializers)
+                                 ServicePriceUpdateSerializers,AdminTimeSlotStatusSerializer)
 
 # crud for Barbers
 class AdminCreateBarberApiView(CreateAPIView):
@@ -59,3 +59,7 @@ class AdminDeleteServiceApiView(DestroyAPIView):
 class AdminUpdateServicePriceApiView(UpdateAPIView):
     queryset = BarberService.objects.all()
     serializer_class = ServicePriceUpdateSerializers
+
+class UpdateTimeSlotStatusApiView(UpdateAPIView):
+    queryset = TimeSlot.objects.all()
+    serializer_class = AdminTimeSlotStatusSerializer
