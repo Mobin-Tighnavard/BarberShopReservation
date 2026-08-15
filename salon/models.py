@@ -59,3 +59,22 @@ class WeeklyPlan(models.Model):
 
     def __str__(self):
         return str(self.barber) +" / "+str(self.date)
+
+class TimeSlot(models.Model):
+    class TimeSlotStatus(models.TextChoices):
+        ACTIVE = "ACTIVE", "Active"
+        OFF = "OFF", 'Off'
+        FULL = "FULL", "Full"
+    weekly_plan = models.ForeignKey(WeeklyPlan,on_delete=models.CASCADE,related_name="slots")
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    status = models.CharField(max_length=10,choices=TimeSlotStatus.choices,default=TimeSlotStatus.ACTIVE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["weekly_plan", "start_time", "end_time"],
+                name="unique_weekly_plan_time_slot"
+            )
+        ]
+

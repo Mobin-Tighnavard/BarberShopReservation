@@ -32,6 +32,7 @@ ALLOWED_HOSTS = [
     "localhost",
     ".loca.lt",
     "172.20.10.7",
+    "10.72.225.115",
 ]
 
 

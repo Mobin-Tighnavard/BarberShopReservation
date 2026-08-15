@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ....models import Barber , BarberService
+from ....models import Barber , BarberService,TimeSlot
 class BarberSerializers(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField()
     class Meta:
@@ -13,3 +13,8 @@ class BarberServiceSerializers(serializers.ModelSerializer):
     class Meta:
         model = BarberService
         fields = ['id','service_name','price','delete_flag']
+
+class TimeSlotSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TimeSlot
+        fields = ['id','start_time','end_time','status']

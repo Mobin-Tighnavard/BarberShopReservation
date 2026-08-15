@@ -1,6 +1,6 @@
 import re
 from rest_framework import serializers
-from ....models import Barber , Service , BarberService
+from ....models import Barber , Service , BarberService , TimeSlot
 class AdminCreateBarberSerializers(serializers.ModelSerializer):
     class Meta:
         model = Barber
@@ -84,3 +84,8 @@ class ServicePriceUpdateSerializers(serializers.ModelSerializer):
     class Meta:
         model = BarberService
         fields = ['price']
+
+class AdminTimeSlotStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TimeSlot
+        fields = ['status']

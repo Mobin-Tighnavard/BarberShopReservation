@@ -3,7 +3,8 @@ from .views.public import BarberListApiView , BarberServiceListApiView , TimeSlo
 from .views.admin import (AdminCreateBarberApiView,AdminDeleteBarberApiView,
                           AdminBarberListApiView,AdminUpdateBarberApiview,AdminCreateServiceApiView,
                           AdminServiceListApiView,AdminUpdateServiceApiView,AdminDeleteServiceApiView,
-                          AdminRetrieveServiceApiView,AdminRetrieveBarberApiView,AdminUpdateServicePriceApiView)
+                          AdminRetrieveServiceApiView,AdminRetrieveBarberApiView,AdminUpdateServicePriceApiView,
+                          UpdateTimeSlotStatusApiView)
 
 urlpatterns = [
     path("v1/barbers/",BarberListApiView.as_view(),name="barber-list"),
@@ -22,6 +23,9 @@ urlpatterns = [
 
     path("v1/admin/barbers-service/<int:pk>/change-price/", AdminUpdateServicePriceApiView.as_view(),
          name="change_price"),
+
+    path("v1/admin/TimeSlot/<int:pk>/change-status/", UpdateTimeSlotStatusApiView.as_view(),
+         name="update-time_slot_status"),
 
     path("v1/barbers/<int:barber_id>/service/",BarberServiceListApiView.as_view(),name="service-list"),
     path("v1/barbers/<int:barber_id>/all-slots/", TimeSlotList.as_view(), name="barber-slot-list"),
