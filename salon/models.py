@@ -47,8 +47,8 @@ class WeeklyPlan(models.Model):
         FULL = "FULL", "Full"
     barber = models.ForeignKey(Barber,on_delete=models.PROTECT)
     date = models.DateField()
-    start_time = models.TimeField()
-    end_time = models.TimeField()
+    start_time = models.TimeField(null=True , blank=True)
+    end_time = models.TimeField(null=True,blank=True)
     status = models.CharField(max_length=70,
                               choices=WeeklyStatus.choices,
                               default=WeeklyStatus.ACTIVE)
@@ -78,3 +78,17 @@ class TimeSlot(models.Model):
             )
         ]
 
+class WorkingHourBase(models.Model):
+    barber = models.ForeignKey(Barber,on_delete=models.PROTECT,related_name="barber_working_hour")
+    weekday = models.IntegerField()
+    start_time = models.TimeField(null=True , blank=True)
+    end_time = models.TimeField(null=True , blank=True)
+    is_off = models.BooleanField(default=False)
+
+    class Meta :
+        constraints = [
+            models.UniqueConstraint(
+                fields=["barber","weekday"],
+                name = "unique_barber_weekday"
+            )
+        ]

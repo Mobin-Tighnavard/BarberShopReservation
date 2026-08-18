@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Barber , Service , WeeklyPlan , BarberService , TimeSlot
+from .models import Barber , Service , WeeklyPlan , BarberService , TimeSlot ,WorkingHourBase
 class BarberAdmin(admin.ModelAdmin):
     list_display = ['first_name','last_name','phone_number','national_code','is_active']
 
@@ -14,9 +14,13 @@ class BarberServiceAdmin(admin.ModelAdmin):
 class TimeSlotAdmin(admin.ModelAdmin):
     list_display = ["weekly_plan","start_time","end_time","status"]
 
+class WorkingHourBaseAdmin(admin.ModelAdmin):
+    list_display = ["barber", "weekday" ,"start_time", "end_time", "is_off"]
+
 admin.site.register(Barber,BarberAdmin)
 admin.site.register(Service,ServiceAdmin)
 admin.site.register(WeeklyPlan,WeeklyPlanAdmin)
 admin.site.register(BarberService,BarberServiceAdmin)
 admin.site.register(TimeSlot,TimeSlotAdmin)
+admin.site.register(WorkingHourBase,WorkingHourBaseAdmin)
 # Register your models here.

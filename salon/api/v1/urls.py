@@ -4,7 +4,8 @@ from .views.admin import (AdminCreateBarberApiView,AdminDeleteBarberApiView,
                           AdminBarberListApiView,AdminUpdateBarberApiview,AdminCreateServiceApiView,
                           AdminServiceListApiView,AdminUpdateServiceApiView,AdminDeleteServiceApiView,
                           AdminRetrieveServiceApiView,AdminRetrieveBarberApiView,AdminUpdateServicePriceApiView,
-                          UpdateTimeSlotStatusApiView)
+                          UpdateTimeSlotStatusApiView,AdminWorkingHoursWeeklyCreateApiview,WeeklyPlanListApiView,
+                          CreateManagerApiView)
 
 urlpatterns = [
     path("v1/barbers/",BarberListApiView.as_view(),name="barber-list"),
@@ -14,6 +15,7 @@ urlpatterns = [
     path("v1/admin/barber/<int:pk>", AdminRetrieveBarberApiView.as_view(), name="barber-retrieve"),
     path("v1/admin/barbers/update/<int:pk>", AdminUpdateBarberApiview.as_view(), name="barber-update"),
     path("v1/admin/barbers/delete/<int:pk>/", AdminDeleteBarberApiView.as_view(), name="barber-delete"),
+    path("v1/admin/barbers/<int:barber_id>/weekly-plan/", WeeklyPlanListApiView.as_view(), name="weekly-plan-list"),
 
     path("v1/admin/service/create/", AdminCreateServiceApiView.as_view(), name="service-create"),
     path("v1/admin/service/list/", AdminServiceListApiView.as_view(), name="service-list"),
@@ -26,6 +28,10 @@ urlpatterns = [
 
     path("v1/admin/TimeSlot/<int:pk>/change-status/", UpdateTimeSlotStatusApiView.as_view(),
          name="update-time_slot_status"),
+    path("v1/admin/working-hours/weekly/",AdminWorkingHoursWeeklyCreateApiview.as_view(),
+         name ="working-hours-weekly"),
+
+    path("v1/admin/create-manager/",CreateManagerApiView.as_view(),name = "create_manager"),
 
     path("v1/barbers/<int:barber_id>/service/",BarberServiceListApiView.as_view(),name="service-list"),
     path("v1/barbers/<int:barber_id>/all-slots/", TimeSlotList.as_view(), name="barber-slot-list"),
