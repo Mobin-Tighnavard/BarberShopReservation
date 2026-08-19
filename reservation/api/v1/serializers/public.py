@@ -1,7 +1,7 @@
 import os
 from rest_framework import serializers
 from PIL import Image
-from ...models import Payment
+from ....models import Payment
 
 class PaymentCreateSerializer(serializers.ModelSerializer):
     class Meta:
