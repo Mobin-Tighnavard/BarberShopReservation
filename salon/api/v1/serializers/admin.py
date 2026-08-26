@@ -82,12 +82,45 @@ class AdminCreateServiceSerializer(serializers.ModelSerializer):
 class AdminServiceListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
-        fields = ['name']
+        fields = ['id','name']
 
 class ServicePriceUpdateSerializers(serializers.ModelSerializer):
     class Meta:
         model = BarberService
         fields = ['price']
+#-------
+class AdminBarberServiceCreateSerializer(serializers.ModelSerializer):
+    barber = serializers.PrimaryKeyRelatedField(queryset = Barber.objects.all())
+    service = serializers.PrimaryKeyRelatedField(queryset = Service.objects.filter(delete_flag = False))
+    class Meta:
+        model = BarberService
+        fields = ['barber','service','price']
+
+class AdminBarberServiceListSerializer(serializers.ModelSerializer):
+    barber_fullname = serializers.SerializerMethodField()
+    service_name = serializers.CharField(source='service.name')
+    class Meta:
+        model = BarberService
+        fields = ['id','barber_fullname','service_name','price']
+
+    def get_barber_fullname(self,obj):
+        return f"{obj.barber.first_name} {obj.barber.last_name}"
+
+class AdminServicePriceUpdateSerializers(serializers.ModelSerializer):
+    barber_fullname = serializers.SerializerMethodField()
+    service_name = serializers.CharField(source='service.name')
+    class Meta:
+        model = BarberService
+        fields = ['barber_fullname','service_name','price']
+
+    def get_barber_fullname(self, obj):
+        return f"{obj.barber.first_name} {obj.barber.last_name}"
+
+class ServicePriceSerializer(serializers.Serializer):
+    pass
+
+
+
 
 class AdminTimeSlotStatusSerializer(serializers.ModelSerializer):
     class Meta:

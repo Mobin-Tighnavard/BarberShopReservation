@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 from django.conf.global_settings import MEDIA_URL, MEDIA_ROOT
 
@@ -50,6 +51,7 @@ INSTALLED_APPS = [
     "reservation",
 
     "rest_framework",
+    "rest_framework_simplejwt.token_blacklist",
     "drf_yasg",
     "django_filters",
     "corsheaders",
@@ -164,3 +166,6 @@ SWAGGER_SETTINGS = {
         }
     }
 }
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=50)}

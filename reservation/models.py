@@ -14,6 +14,7 @@ class Reservation(models.Model):
     reservation_time = models.TimeField()
     reservation_date = models.DateField()
     status = models.CharField(max_length=70,choices=ReservationStatus.choices,default=ReservationStatus.PENDING_PAYMENT)
+    expires_at = models.DateTimeField(null=True,blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 

@@ -1,5 +1,13 @@
 from rest_framework import serializers
-from ....models import Reservation , Payment
+from ....models import Reservation , Payment, BarberService
+
+class AdminReservationCreateSerializer(serializers.Serializer):
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    phone_number = serializers.CharField()
+    barber_service = serializers.PrimaryKeyRelatedField(queryset=BarberService.objects.all())
+    reservation_date = serializers.DateField()
+    reservation_time = serializers.TimeField()
 
 class AdminReservationListSerializer(serializers.ModelSerializer):
     customer_name = serializers.SerializerMethodField()
