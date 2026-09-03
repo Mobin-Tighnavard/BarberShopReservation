@@ -10,7 +10,7 @@ class PaymentCreateSerializer(serializers.ModelSerializer):
 
     def validate_receipt_image(self,value):
         # manage size
-        max_size = 20 * 1024 * 1024
+        max_size = 10 * 1024 * 1024
         if value.size > max_size:
             raise serializers.ValidationError(
                 {"message" : "حجم عکس بیشتر از 20 مگابایت است" }

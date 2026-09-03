@@ -12,7 +12,7 @@ from ..serializers.admin import (AdminCreateBarberSerializers,AdminBarberListSer
                                  ServicePriceUpdateSerializers,AdminTimeSlotStatusSerializer,
                                  WorkingHourWeeklySerializer,CreateManagerSerializer,
                                  AdminBarberServiceCreateSerializer,WeeklyPlanSerializer,
-                                 AdminBarberServiceListSerializer,AdminServicePriceUpdateSerializers)
+                                 AdminBarberServiceListSerializer,AdminServicePriceUpdateSerializers,CreateAboutUs)
 
 # crud for Barbers
 class AdminCreateBarberApiView(CreateAPIView):
@@ -189,3 +189,7 @@ class AdminMenuCount(APIView):
                                                                 service__delete_flag=False).count(),
         }
         )
+
+#
+class AdminAboutUsCreateApiView(CreateAPIView):
+    serializer_class = CreateAboutUs

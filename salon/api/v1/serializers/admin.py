@@ -2,7 +2,7 @@ import re
 from rest_framework import serializers
 from django.db import transaction
 from django.contrib.auth.models import User,Group
-from ....models import Barber , Service , BarberService , TimeSlot , WorkingHourBase , WeeklyPlan
+from ....models import Barber , Service , BarberService , TimeSlot , WorkingHourBase , WeeklyPlan, AboutUs
 from .public import TimeSlotSerializer
 
 class AdminCreateBarberSerializers(serializers.ModelSerializer):
@@ -214,3 +214,11 @@ class CreateManagerSerializer(serializers.ModelSerializer):
         user.groups.add(group)
 
         return user
+
+# serializer for about us
+
+class CreateAboutUs(serializers.ModelSerializer):
+
+    class Meta:
+        model = AboutUs
+        fields = ['address','phone_number']

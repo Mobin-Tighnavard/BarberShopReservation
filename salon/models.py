@@ -92,3 +92,7 @@ class WorkingHourBase(models.Model):
                 name = "unique_barber_weekday"
             )
         ]
+
+class AboutUs(models.Model):
+    address = models.TextField()
+    Phone_number = models.CharField(max_length=11,validators=[phone_validator()],unique=True)

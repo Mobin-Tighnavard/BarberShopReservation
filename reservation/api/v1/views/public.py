@@ -16,5 +16,4 @@ class PaymentCreateApiView(APIView):
         reservation = serializer.validated_data['reservation']
         receipt_image = serializer.validated_data['receipt_image']
         payment = create_payment(reservation=reservation,receipt_image=receipt_image)
-        print("hgiiiiiiiiiiiiiiii")
         return Response(PaymentSerializer(payment).data,status=status.HTTP_201_CREATED)

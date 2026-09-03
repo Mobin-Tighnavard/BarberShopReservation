@@ -6,7 +6,7 @@ import re
 class CreateCustomerSerializers(serializers.ModelSerializer):
     class Meta:
         model = Customer
-        fields = ['first_name','last_name','phone_number']
+        fields = ['id','first_name','last_name','phone_number']
         # extra_kwargs={
         #     "phone_number":{
         #         "validators":[]
