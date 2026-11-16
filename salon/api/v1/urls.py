@@ -13,10 +13,10 @@ urlpatterns = [
     path("v1/barbers/",BarberListApiView.as_view(),name="barber-list"),
 
     path("v1/admin/barbers/create/", AdminCreateBarberApiView.as_view(), name="barber-create"),
-    path("v1/admin/barbers/list/", AdminBarberListApiView.as_view(), name="barber-list"),
-    path("v1/admin/barber/<int:pk>/", AdminRetrieveBarberApiView.as_view(), name="barber-retrieve"),
-    path("v1/admin/barbers/update/<int:pk>/", AdminUpdateBarberApiview.as_view(), name="barber-update"),
-    path("v1/admin/barbers/delete/<int:pk>/", AdminDeleteBarberApiView.as_view(), name="barber-delete"),
+    path("v1/admin/barbers/list/", AdminBarberListApiView.as_view(), name="admin-barber-list"),
+    path("v1/admin/barber/<int:pk>/", AdminRetrieveBarberApiView.as_view(), name="admin-barber-retrieve"),
+    path("v1/admin/barbers/update/<int:pk>/", AdminUpdateBarberApiview.as_view(), name="admin-barber-update"),
+    path("v1/admin/barbers/delete/<int:pk>/", AdminDeleteBarberApiView.as_view(), name="admin-barber-delete"),
     path("v1/admin/barbers/<int:barber_id>/weekly-plan/", WeeklyPlanListApiView.as_view(), name="weekly-plan-list"),
 
     path("v1/admin/service/create/", AdminCreateServiceApiView.as_view(), name="service-create"),
@@ -34,9 +34,9 @@ urlpatterns = [
     path("v1/admin/new-service/barber/list/", AdminServiceListForBarber.as_view(),
          name="new-service-barber"),
     path("v1/admin/barber-service/<int:pk>/", AdminRetrieveBarberServiceApiView.as_view(),
-         name="barber-service-price"),
+         name="barber-service-price-retrieve"),
     path("v1/admin/barber-service/delete/<int:pk>/", AdminDeleteBarberServiceApiView.as_view(),
-         name="barber-service-price"),
+         name="barber-service-delete"),
 
 
 

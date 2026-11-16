@@ -25,7 +25,6 @@ class AdminReservationCreateApiView(APIView):
             reservation = create_reservation(customer= serializer.validated_data['customer'],
                                              barber_service = serializer.validated_data['barber_service'],
                                              slot = serializer.validated_data['slot'],
-                                             reservation_date = serializer.validated_data['reservation_date'],
                                              )
 
         except ValueError as e:
@@ -34,8 +33,6 @@ class AdminReservationCreateApiView(APIView):
                 status = status.HTTP_400_BAD_REQUEST
             )
         response_serializer = ReservationResponseSerializer(reservation)
-        print('---------')
-        print(response_serializer.data)
         return Response(
             response_serializer.data,
             status=status.HTTP_201_CREATED

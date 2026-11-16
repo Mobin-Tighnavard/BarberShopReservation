@@ -94,12 +94,12 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "barbershopproject",
-        "USER": "root",
-        "PASSWORD": "mysql@project1",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "barbershopreservation",
+        "USER": "postgres",
+        "PASSWORD": "postgresql@project1",
         "HOST": "127.0.0.1",
-        "PORT": "3306",
+        "PORT": "5432",
     }
 }
 

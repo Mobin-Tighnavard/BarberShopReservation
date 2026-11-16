@@ -5,13 +5,14 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView,ListAPIView,DestroyAPIView,UpdateAPIView,RetrieveAPIView
 from ....models import Barber , Service , BarberService , TimeSlot
+from reservation.models import Reservation
 from ..permissions import IsBarberShopManager
 from ..services import get_or_create_weekly_plan
 from ..serializers.admin import (AdminCreateBarberSerializers,AdminBarberListSerializer,AdminUpdateBarberSerializer
                                  ,AdminCreateServiceSerializer,AdminServiceListSerializer,
                                  ServicePriceUpdateSerializers,AdminTimeSlotStatusSerializer,
                                  WorkingHourWeeklySerializer,CreateManagerSerializer,
-                                 AdminBarberServiceCreateSerializer,WeeklyPlanSerializer,
+                                 AdminBarberServiceCreateSerializer,
                                  AdminBarberServiceListSerializer,AdminServicePriceUpdateSerializers,CreateAboutUs)
 
 # crud for Barbers
@@ -131,7 +132,7 @@ class UpdateTimeSlotStatusApiView(UpdateAPIView):
 # Set Work Time
 
 class AdminWorkingHoursWeeklyCreateApiview(CreateAPIView):
-    permission_classes = [IsBarberShopManager]
+    # permission_classes = [IsBarberShopManager]
     serializer_class = WorkingHourWeeklySerializer
 
 class WeeklyPlanListApiView(APIView):
@@ -159,17 +160,8 @@ class WeeklyPlanListApiView(APIView):
                 {"message":"format of date is wrong"},
                 status = status.HTTP_400_BAD_REQUEST
             )
-        weekly_plans = []
-        for i in range(7):
-            date = start_date + timedelta(days=i)
-            weekly_plan = get_or_create_weekly_plan(barber,date)
 
-            if weekly_plan:
-                weekly_plans.append(weekly_plan)
-
-        serializer = WeeklyPlanSerializer(weekly_plans,many=True)
-
-        return Response(serializer.data)
+        return Response("fix WeeklyPlanListApiView ")
 
 # create manager for barbershop
 
@@ -184,9 +176,13 @@ class AdminMenuCount(APIView):
     def get(self,request):
         return Response({
             "barbers_count":Barber.objects.filter(is_active=True).count(),
-            "service_count":Service.objects.filter(delete_flag=False).count(),
-            "barber_service_count":BarberService.objects.filter(barber__is_active=True,
-                                                                service__delete_flag=False).count(),
+            "services_count":Service.objects.filter(delete_flag=False).count(),
+            "pending_confirmation_count":Reservation.objects.filter(
+                status= Reservation.ReservationStatus.PENDING_CONFIRMATION).count()
+            # "barber_service_count":BarberService.objects.filter(barber__is_active=True,
+            #                                                     service__delete_flag=False).count(),
+            # pending confirmation count:
+            #
         }
         )
 

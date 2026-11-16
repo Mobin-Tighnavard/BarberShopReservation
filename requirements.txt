@@ -7,7 +7,7 @@ markdown
 django-filter
 drf-yasg
 
-mysqlclient
+psycopg[binary]
 django-cors-headers
 pillow
 

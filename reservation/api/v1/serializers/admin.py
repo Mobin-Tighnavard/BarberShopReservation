@@ -13,7 +13,6 @@ class AdminReservationCreateSerializer(serializers.Serializer):
     slot = serializers.PrimaryKeyRelatedField(
         queryset=TimeSlot.objects.all()
     )
-    reservation_date = serializers.DateField()
 
 class ReservationResponseSerializer(serializers.ModelSerializer):
     barber_fullname = serializers.SerializerMethodField()

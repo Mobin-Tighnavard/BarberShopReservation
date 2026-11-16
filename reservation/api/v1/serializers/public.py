@@ -13,7 +13,7 @@ class PaymentCreateSerializer(serializers.ModelSerializer):
         max_size = 10 * 1024 * 1024
         if value.size > max_size:
             raise serializers.ValidationError(
-                {"message" : "حجم عکس بیشتر از 20 مگابایت است" }
+                {"message" : "حجم عکس بیشتر از 10 مگابایت است" }
             )
         # manage format
         try:

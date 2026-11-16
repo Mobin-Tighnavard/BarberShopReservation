@@ -4,9 +4,9 @@ from rest_framework.response import Response
 from rest_framework .views import APIView
 from rest_framework import status
 from datetime import datetime
-from ..services import generate_slots
+from ..services import generate_future_slots
 
-from ....models import Barber , BarberService , WeeklyPlan , TimeSlot
+from ....models import Barber , BarberService , TimeSlot
 from ..serializers.public import BarberSerializers , BarberServiceSerializers , TimeSlotSerializer
 
 class BarberListApiView(ListAPIView):
@@ -44,6 +44,7 @@ class TimeSlotList(APIView):
         date = request.query_params.get('date')
         try :
             barber = Barber.objects.get(id = barber_id)
+            generate_future_slots(barber,days=7)
         except Barber.DoesNotExist:
             return Response({"message":"barber with this id does not exist"},
                              status=status.HTTP_404_NOT_FOUND)
@@ -55,8 +56,8 @@ class TimeSlotList(APIView):
                     {"message": "فرمت تاریخ اشتباه است"},
                     status=status.HTTP_400_BAD_REQUEST
                 )
-            slots = TimeSlot.objects.filter(weekly_plan__barber_id=barber_id,
-                                            weekly_plan__date=date).order_by("start_time")
+            slots = TimeSlot.objects.filter(barber=barber_id,
+                                            date=date).order_by("start_time")
             serializer = TimeSlotSerializer(slots,many=True)
             return Response(serializer.data)
         else:

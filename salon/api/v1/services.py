@@ -1,8 +1,8 @@
 from rest_framework.response import Response
 from rest_framework import status
 
-from datetime import datetime ,timedelta
-from ...models import TimeSlot , WorkingHourBase , WeeklyPlan
+from datetime import datetime ,timedelta, date
+from ...models import TimeSlot , WorkingHourBase
 
 # def generate_slots(barber_id,date):
 #     date = datetime.strptime(date, "%Y-%m-%d").date()
@@ -28,23 +28,54 @@ from ...models import TimeSlot , WorkingHourBase , WeeklyPlan
 #         current = end_slot
 #     return slots
 
-def generate_slots(weekly_plan):
-    if weekly_plan.status != WeeklyPlan.WeeklyStatus.ACTIVE:
+def generate_future_slots(barber, days=7):
+    today = date.today()
+
+
+    for i in range(7):
+        target_date = today + timedelta(days=i)
+
+        weekday = (target_date.weekday() + 2) % 7
+
+        try:
+            working_hour = WorkingHourBase.objects.get(
+                barber=barber,
+                weekday=weekday
+            )
+        except WorkingHourBase.DoesNotExist:
+            continue
+        generate_slots(working_hour,date=target_date)
+
+def generate_slots(working_hour, date):
+    if working_hour.is_off:
         return []
-    current =datetime.combine(weekly_plan.date,weekly_plan.start_time)
-    end = datetime.combine(weekly_plan.date,weekly_plan.end_time)
-    duration = timedelta(hours=1)
+    current = datetime.combine(date,working_hour.start_time)
+    end = datetime.combine(date,working_hour.end_time)
+
     slots = []
+
     while current < end:
-        end_slot = current + duration
-        slot = TimeSlot.objects.get_or_create(
-            weekly_plan=weekly_plan,
+        end_slot = current + timedelta(hours=1)
+
+        if end_slot > end:
+            break
+
+        slot ,created = TimeSlot.objects.get_or_create(
+            barber = working_hour.barber,
+            date = date,
             start_time = current.time(),
-            end_time = end_slot.time()
+            end_time = end_slot.time(),
+            defaults={
+                "status":TimeSlot.TimeSlotStatus.ACTIVE
+            }
         )
-        slots.append(slot[0])
+        slots.append(slot)
         current = end_slot
+
     return slots
+
+
+
 
 def get_or_create_weekly_plan(barber,date):
     weekday = date.weekday()
@@ -65,8 +96,6 @@ def get_or_create_weekly_plan(barber,date):
                         else WeeklyPlan.WeeklyStatus.ACTIVE)
         }
     )
-    if created and WeeklyPlan.status == WeeklyPlan.WeeklyStatus.ACTIVE:
-        generate_slots(weekly_plan)
     return weekly_plan
 
 

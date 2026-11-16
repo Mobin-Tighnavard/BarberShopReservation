@@ -2,7 +2,8 @@ import re
 from rest_framework import serializers
 from django.db import transaction
 from django.contrib.auth.models import User,Group
-from ....models import Barber , Service , BarberService , TimeSlot , WorkingHourBase , WeeklyPlan, AboutUs
+from ....models import Barber , Service , BarberService , TimeSlot , WorkingHourBase, AboutUs
+from ..services import generate_future_slots
 from .public import TimeSlotSerializer
 
 class AdminCreateBarberSerializers(serializers.ModelSerializer):
@@ -111,7 +112,7 @@ class AdminServicePriceUpdateSerializers(serializers.ModelSerializer):
     service_name = serializers.CharField(source='service.name')
     class Meta:
         model = BarberService
-        fields = ['barber_fullname','service_name','price']
+        fields = ['id','barber_fullname','service_name','price']
 
     def get_barber_fullname(self, obj):
         return f"{obj.barber.first_name} {obj.barber.last_name}"
@@ -186,13 +187,9 @@ class WorkingHourWeeklySerializer(serializers.Serializer):
                     "is_off":working_hour['is_off']
                 }
             )
+        generate_future_slots(barber,days=7)
         return validated_data
 
-class WeeklyPlanSerializer(serializers.ModelSerializer):
-    slots = TimeSlotSerializer(many=True , read_only=True)
-    class Meta:
-        model = WeeklyPlan
-        fields = ['id','date','start_time','end_time','status','slots']
 
 # serializer for create manager
 

@@ -40,32 +40,19 @@ class BarberService(models.Model):
     def __str__(self):
         return self.barber.first_name + " " + self.barber.last_name +"/"+ self.service.name + "/"+ str(self.price)
 
-class WeeklyPlan(models.Model):
-    class WeeklyStatus(models.TextChoices):
-        ACTIVE = "ACTIVE", "Active"
-        OFF = "OFF", 'Off'
-        FULL = "FULL", "Full"
-    barber = models.ForeignKey(Barber,on_delete=models.PROTECT)
-    date = models.DateField()
-    start_time = models.TimeField(null=True , blank=True)
-    end_time = models.TimeField(null=True,blank=True)
-    status = models.CharField(max_length=70,
-                              choices=WeeklyStatus.choices,
-                              default=WeeklyStatus.ACTIVE)
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=["barber","date"],name="unique_weekly_plan")
-        ]
 
-    def __str__(self):
-        return str(self.barber) +" / "+str(self.date)
 
 class TimeSlot(models.Model):
     class TimeSlotStatus(models.TextChoices):
         ACTIVE = "ACTIVE", "Active"
         OFF = "OFF", 'Off'
         FULL = "FULL", "Full"
-    weekly_plan = models.ForeignKey(WeeklyPlan,on_delete=models.CASCADE,related_name="slots")
+    barber = models.ForeignKey(
+        Barber,
+        on_delete=models.PROTECT,
+        related_name="time_slots"
+    )
+    date = models.DateField()
     start_time = models.TimeField()
     end_time = models.TimeField()
     status = models.CharField(max_length=10,choices=TimeSlotStatus.choices,default=TimeSlotStatus.ACTIVE)
@@ -73,8 +60,8 @@ class TimeSlot(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["weekly_plan", "start_time", "end_time"],
-                name="unique_weekly_plan_time_slot"
+                fields=["barber", "date" ,"start_time" ],
+                name="unique_barber_date_start_time"
             )
         ]
 

@@ -17,7 +17,6 @@ def create_payment(reservation,receipt_image):
     print('---------')
     reservation.status=Reservation.ReservationStatus.PENDING_CONFIRMATION
     reservation.save(update_fields = ["status"])
-    print(reservation.status)
     return payment
 
 @transaction.atomic
@@ -47,17 +46,21 @@ def update_payment_status(payment,new_status):
     return payment
 
 @transaction.atomic
-def create_reservation(customer, barber_service, slot ,reservation_date):
+def create_reservation(customer, barber_service, slot ):# به ایرعلی بگم resevation_date رو برداشتم و برام نفرسته
 
     slot = TimeSlot.objects.select_for_update().get(pk=slot.pk)
 
     if slot.status != TimeSlot.TimeSlotStatus.ACTIVE:
         raise ValueError("این زمان قابل رزرو نیست")
 
+    if slot.barber_id != barber_service.barber_id:
+        raise ValueError("این زمان متعلق به آرایشگر این سرویس نیست")
+
+
     existing_reservation = Reservation.objects.filter(
         barber_service = barber_service,
         reservation_time = slot.start_time,
-        reservation_date = reservation_date,
+        reservation_date = slot.date,
     ).exclude(
         status__in=[Reservation.ReservationStatus.EXPIRED,Reservation.ReservationStatus.CANCELED]
     ).first()
